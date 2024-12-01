@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Cricket Scores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #ff5722;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .container {
+            padding: 1rem;
+        }
+
+        .scores {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Live Cricket Scores</h1>
+    </header>
+    <div class="container">
+        <div class="scores">
+            <div id="loading" class="loading">Fetching live scores...</div>
+            <div id="scoreData"></div>
+            <div id="error" class="error"></div>
+        </div>
+    </div>
+
+    <script>
+        const data = null;
+
+        const xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener('readystatechange', function () {
+            if (this.readyState === this.DONE) {
+                const loadingElement = document.getElementById("loading");
+                const scoreDataElement = document.getElementById("scoreData");
+                const errorElement = document.getElementById("error");
+
+                try {
+                    loadingElement.style.display = "none";
+                    const response = JSON.parse(this.responseText);
+
+                    // Extract data from the response and display it
+                    const commentary = response.commentaryList || [];
+                    if (commentary.length > 0) {
+                        const latest = commentary[0].commText;
+                        scoreDataElement.innerHTML = `<p>${latest}</p>`;
+                    } else {
+                        scoreDataElement.innerHTML = "<p>No live scores available.</p>";
+                    }
+                } catch (e) {
+                    errorElement.innerText = "Failed to fetch live scores.";
+                }
+            }
+        });
+
+        xhr.open('GET', 'https://cricbuzz-cricket.p.rapidapi.com/mcenter/v1/41881/comm');
+        xhr.setRequestHeader('x-rapidapi-key', '031548c715mshd5bf0976e4a5d23p11a15cjsn184efeb22d93');
+        xhr.setRequestHeader('x-rapidapi-host', 'cricbuzz-cricket.p.rapidapi.com');
+
+        xhr.send(data);
+    </script>
+</body>
+</html>
