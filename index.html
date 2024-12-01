@@ -57,38 +57,38 @@
     <script>
         const data = null;
 
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
+const xhr = new XMLHttpRequest();
 
-        xhr.addEventListener('readystatechange', function () {
-            if (this.readyState === this.DONE) {
-                const loadingElement = document.getElementById("loading");
-                const scoreDataElement = document.getElementById("scoreData");
-                const errorElement = document.getElementById("error");
+xhr.addEventListener('readystatechange', function () {
+    if (this.readyState === this.DONE) {
+        const loadingElement = document.getElementById("loading");
+        const scoreDataElement = document.getElementById("scoreData");
+        const errorElement = document.getElementById("error");
 
-                try {
-                    loadingElement.style.display = "none";
-                    const response = JSON.parse(this.responseText);
+        try {
+            loadingElement.style.display = "none";
+            const response = JSON.parse(this.responseText);
 
-                    // Extract data from the response and display it
-                    const commentary = response.commentaryList || [];
-                    if (commentary.length > 0) {
-                        const latest = commentary[0].commText;
-                        scoreDataElement.innerHTML = `<p>${latest}</p>`;
-                    } else {
-                        scoreDataElement.innerHTML = "<p>No live scores available.</p>";
-                    }
-                } catch (e) {
-                    errorElement.innerText = "Failed to fetch live scores.";
-                }
+            // Extract data from the response and display it
+            const commentary = response.commentaryList || [];
+            if (commentary.length > 0) {
+                const latest = commentary[0].commText;
+                scoreDataElement.innerHTML = `<p>${latest}</p>`;
+            } else {
+                scoreDataElement.innerHTML = "<p>No live scores available.</p>";
             }
-        });
+        } catch (e) {
+            errorElement.innerText = "Failed to fetch live scores.";
+        }
+    }
+});
 
-        xhr.open('GET', 'https://cricbuzz-cricket.p.rapidapi.com/mcenter/v1/41881/comm');
-        xhr.setRequestHeader('x-rapidapi-key', '031548c715mshd5bf0976e4a5d23p11a15cjsn184efeb22d93');
-        xhr.setRequestHeader('x-rapidapi-host', 'cricbuzz-cricket.p.rapidapi.com');
+xhr.open('GET', 'https://cricbuzz-cricket.p.rapidapi.com/mcenter/v1/41881/comm');
+xhr.setRequestHeader('x-rapidapi-key', '031548c715mshd5bf0976e4a5d23p11a15cjsn184efeb22d93');
+xhr.setRequestHeader('x-rapidapi-host', 'cricbuzz-cricket.p.rapidapi.com');
 
-        xhr.send(data);
+xhr.send(data);
+
     </script>
 </body>
 </html>
